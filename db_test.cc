@@ -11,10 +11,10 @@ void TestDishTable(){
   // bool ret=dishTable.Insert(dish);
   // printf("ret = %d\n",ret);
   //2.查找所有数据
-  //int ret = dishTable.SelectAll(&dish);
-  //printf("rer= %d\n",ret);
+  int ret = dishTable.SelectAll(&dish);
+  printf("rer= %d\n",ret);
   Json::StyledWriter w;
-  //printf("%s/n",w.write(dish).c_str());
+  printf("%s/n",w.write(dish).c_str());
   //3.查找指定数据
   //int ret = dishTable.SelectOne(2,&dish);
   //printf("ret = %d\n",ret);
@@ -58,7 +58,7 @@ void TestOrderTable(){
 }
 
 int main(){
-  //TestDishTable();
-  TestOrderTable();
+  TestDishTable();
+ //TestOrderTable();
   return 0;
 }

@@ -189,13 +189,13 @@ namespace order_system{
         sprintf(sql,"update order_table set status = %d where order_id = %d",
             order["status"].asInt(),
             order["order_id"].asInt());
-        printf("sql: %s\n",sql);
+        //printf("sql: %s\n",sql);
         int ret = mysql_query(_mysql,sql);
         if(ret!=0){
           printf("OrderTable ChangeState Failed! %s\n",mysql_error(_mysql));
           return false;
         }
-        printf("OrderTable ChangeState OK!\n");
+       //printf("OrderTable ChangeState OK!\n");
         return true;
       }
     private:
