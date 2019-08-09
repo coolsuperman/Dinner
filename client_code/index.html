@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Coolsuperman/Project/点餐系统</title>
+
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="img/favicon.ico" />
+
+	<!-- CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet" />
+	<link href="css/font-awesome.min.css" rel="stylesheet" />
+	<link href="css/style.css" rel="stylesheet" />
+
+	<!-- Google Fonts -->
+	<link href='http://fonts.useso.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+	<!-- Start: Main Content -->
+	<div class="main-container">
+		<!-- Start: Content -->
+		<section class="content-section">
+			<div class="container" id= app>
+				<div class="row">
+					<nav role="navigation" class="navbar navbar-inverse lite-nav">
+						<div class="navbar-header">
+							<button data-target="#bs-example-navbar-collapse-2" data-toggle="collapse"
+								class="navbar-toggle" type="button">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<a href="#" class="navbar-brand">用户页面</a>
+						</div>
+						<div id="bs-example-navbar-collapse-2" class="collapse navbar-collapse">
+							<ul class="nav navbar-nav">
+								<li class="active"><a href="#">Home <i class="fa fa-home"></i></a></li>
+								<li><a href="#">About <i class="fa fa-calendar"></i></a></li>
+								<li><a href="#">Services <i class="fa fa-cogs"></i></a></li>
+								<li><a href="#">Contact Us <i class="fa fa-phone"></i></a></li>
+
+							</ul>
+							<ul class="nav navbar-nav navbar-right">
+								<li><a href="#">Link</a></li>
+								<li class="dropdown">
+									<a data-toggle="dropdown" class="dropdown-toggle" href="#">Dropdown <b
+											class="caret"></b></a>
+									<ul role="menu" class="dropdown-menu">
+										<li><a href="#">Action</a></li>
+										<li><a href="#">Another action</a></li>
+										<li><a href="#">Something else here</a></li>
+										<li class="divider"></li>
+										<li><a href="#">Separated link</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</nav>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<h2 class="page-header"><span>{{auther}}</span></h2><!--插值表达式-->
+					</div>
+					<div class="col-md-12">
+						<div class="lt-tables">
+							<div class="lt-box">
+								<div class="table-responsive">
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>菜名</th>
+												<th>价格</th>
+												<th>选择</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="(dish,index) in dishes">
+												<td>{{index+1}}</td>
+												<td>{{dish.name}}</td>
+												<td>{{dish.price/100}}元</td>
+												<td class="checkbox-custom checkbox-success">
+													<div class="checkbox-custom checkbox-success">
+														<input type="checkbox" id="checkboxExample3" v-model="dish.selected">
+														<label for="checkboxExample3"></label>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<p><span class="lead text-muted">合计:{{cacl}}元</span>
+								<span class="lead text-muted"></span>
+								<span>
+									<button class="btn btn-radius btn-success" style="float:right" v-on:click="send()"><i class="fa fa-smile-o"></i> 提交</button>
+								</span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- End: Content -->
+
+		<!-- Start: Footer-->
+		<footer class="footer">
+			<p><i class="fa fa-coffee"></i> Copyright by Coolsuperman 2019</a> - <a
+					href="https://blog.csdn.net/coolsuperman" target="_blank" d>My Blog</a></p>
+		</footer>
+		<!-- End: Footer -->
+	</div>
+	<!-- End: Main Content -->
+	<!-- Javascript Files -->
+	<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery.pagination.js"></script>
+	<script type="text/javascript" src="js/jquery.knob.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<!--Vue 动态渲染-->
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				auther: '菜单',
+				dishes:[ ],
+			},
+			methods:{
+				get_dishes(){
+					//从服务器上获取菜品数据
+					//ajax http客户端
+					//JQuery:html原生的ajax API不好用
+					$.ajax({
+						type:'get',
+						url:'/dish',
+						context:this,//指的是app这个Vue对象
+						success(data,status){
+							//this 指的是 context 的值，如果context没有值，指的就是$ JQuery的对象；
+							this.dishes=data;
+						}
+					});
+				},
+				send(){
+					if(this.cacl==0){
+						alert("表单不可为空！");
+						return;
+					}
+
+				}
+			},
+			computed:{
+				cacl(){
+					var sum=0;
+					for(var index in this.dishes){
+						if(this.dishes[index].selected){
+							sum+=this.dishes[index].price;
+						}
+					}
+					return sum/100;
+				}
+			}
+		})
+		app.get_dishes();
+	</script>
+	<!--Vue End-->
+</body>
+
+</html>
